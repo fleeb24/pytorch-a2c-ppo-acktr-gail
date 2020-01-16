@@ -52,6 +52,7 @@ class Policy(nn.Module):
         raise NotImplementedError
 
     def act(self, inputs, rnn_hxs, masks, deterministic=False):
+        # print(inputs.device, rnn_hxs.device, masks.device)
         value, actor_features, rnn_hxs = self.base(inputs, rnn_hxs, masks)
         dist = self.dist(actor_features)
 
@@ -187,7 +188,7 @@ class CNNBase(NNBase):
         self.train()
 
     def forward(self, inputs, rnn_hxs, masks):
-        x = self.main(inputs / 255.0)
+        x = self.main(inputs.to('cuda') / 255.0)
 
         if self.is_recurrent:
             x, rnn_hxs = self._forward_gru(x, rnn_hxs, masks)
@@ -218,7 +219,7 @@ class MLPBase(NNBase):
         self.train()
 
     def forward(self, inputs, rnn_hxs, masks):
-        x = inputs
+        x = inputs.to('cuda')
 
         if self.is_recurrent:
             x, rnn_hxs = self._forward_gru(x, rnn_hxs, masks)

@@ -2,6 +2,7 @@ import argparse
 import os
 # workaround to unpickle olf model files
 import sys
+import time
 
 import numpy as np
 import torch
@@ -63,6 +64,7 @@ masks = torch.zeros(1, 1)
 
 obs = env.reset()
 
+
 if render_func is not None:
     render_func('human')
 
@@ -93,3 +95,5 @@ while True:
 
     if render_func is not None:
         render_func('human')
+
+    time.sleep(0.02)
